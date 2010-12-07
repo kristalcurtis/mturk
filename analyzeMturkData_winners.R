@@ -1,6 +1,9 @@
 # analyze mechanical turk data from 12.2.10
 
 mturk.data = as.data.frame(read.csv("~/Desktop/Batch_390938_batch_results.csv"))
+mturk.data.random.order = as.data.frame(read.csv("~/Desktop/Batch_394431_batch_results.csv"))
+
+
 
 dim(mturk.data)
 
@@ -93,3 +96,75 @@ getColorCodePerRowInDiagram = function(captionVotesForAllCartoons, colorOptions)
 }
 
 getColorCodePerRowInDiagram(captionVotesForAllCartoons, colorOptions)
+
+
+# check data with random order of captions
+plotCaptionVotesForAllCartoons(tabulateCaptionVotesForAllCartoons(mturk.data.random.order))
+
+winningCaptionsForAllCartoons = getWinningCaptionsForAllCartoons(mturk.data.random.order)
+length(which(winningCaptionsForAllCartoons == "caption1"))
+length(which(winningCaptionsForAllCartoons == "caption2"))
+length(which(winningCaptionsForAllCartoons == "caption3"))
+
+convertCaptionAnswerToActualCaptionBasedOnRandom = function(mturk.data) {
+	for (i in 1:nrow(mturk.data)) {
+		# skip when == 1 b/c already correct
+		if (mturk.data$Answer.Random[i] == 2) {
+			if (mturk.data$Answer.caption[i] == "caption2") {
+				mturk.data$Answer.caption[i] = "caption3"
+			} else if (mturk.data$Answer.caption[i] == "caption3") {
+				mturk.data$Answer.caption[i] = "caption2"
+			}
+		} else if (mturk.data$Answer.Random[i] == 3) {
+			if (mturk.data$Answer.caption[i] == "caption1") {
+				mturk.data$Answer.caption[i] = "caption2"
+			} else if (mturk.data$Answer.caption[i] == "caption2") {
+				mturk.data$Answer.caption[i] = "caption1"
+			}
+		} else if (mturk.data$Answer.Random[i] == 4) {
+			if (mturk.data$Answer.caption[i] == "caption1") {
+				mturk.data$Answer.caption[i] = "caption2"
+			} else if (mturk.data$Answer.caption[i] == "caption2") {
+				mturk.data$Answer.caption[i] = "caption3"
+			} else if (mturk.data$Answer.caption[i] == "caption3") {
+				mturk.data$Answer.caption[i] = "caption1"
+			}
+		} else if (mturk.data$Answer.Random[i] == 5) {
+			if (mturk.data$Answer.caption[i] == "caption1") {
+				mturk.data$Answer.caption[i] = "caption3"
+			} else if (mturk.data$Answer.caption[i] == "caption2") {
+				mturk.data$Answer.caption[i] = "caption1"
+			} else if (mturk.data$Answer.caption[i] == "caption3") {
+				mturk.data$Answer.caption[i] = "caption2"
+			}
+		} else if (mturk.data$Answer.Random[i] == 6) {
+			if (mturk.data$Answer.caption[i] == "caption1") {
+				mturk.data$Answer.caption[i] = "caption3"
+			} else if (mturk.data$Answer.caption[i] == "caption3") {
+				mturk.data$Answer.caption[i] = "caption1"
+			}
+		}
+	}
+	
+	return(mturk.data)
+}
+
+
+
+
+
+mturk.data.random.order.fixed.caption.answer = convertCaptionAnswerToActualCaptionBasedOnRandom(mturk.data.random.order)
+
+plotCaptionVotesForAllCartoons(tabulateCaptionVotesForAllCartoons(mturk.data.random.order.fixed.caption.answer))
+
+winningCaptionsForAllCartoons = getWinningCaptionsForAllCartoons(mturk.data.random.order.fixed.caption.answer)
+length(which(winningCaptionsForAllCartoons == "caption1"))
+length(which(winningCaptionsForAllCartoons == "caption2"))
+length(which(winningCaptionsForAllCartoons == "caption3"))
+
+i=150
+mturk.data.random.order[i,]
+mturk.data.random.order.fixed.caption.answer[i,]
+
+
+write.csv(mturk.data.random.order.fixed.caption.answer, file="~/Desktop/Batch_394432_fixed_caption.csv")
