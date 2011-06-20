@@ -1,0 +1,1 @@
+data <- as.data.frame(read.csv("/Users/Durga/Research/MechanicalTurk/RepeatabliltyDotImageExp/10by10620Noon.csv", header = TRUE, sep = ","))
