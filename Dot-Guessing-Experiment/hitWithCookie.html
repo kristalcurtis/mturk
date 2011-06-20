@@ -1,0 +1,736 @@
+<p>
+<link href="http://www.eecs.berkeley.edu/~kcurtis/slider_default.css" rel="stylesheet" type="text/css" /></p>
+<script
+    language="JavaScript"
+    src="http://www.eecs.berkeley.edu/~kcurtis/slider.js" >
+</script>
+<p><style type="text/css"> 
+body {
+	background-color: #FFFFFF;
+	color: #000000;
+	margin: 0px 0;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	}
+table {
+	margin: 20px 0 20px 0;
+   }
+h1 {
+	color: #ddd;
+	font-size: 50px;
+	font-weight: 600;
+	margin: 10px 0;
+	text-align: justify;
+	}
+p {
+	font-size: 14px;
+	line-height: 20px;
+	text-align: justify;
+	margin: 5px 0 5px 0;
+	}
+p.author {
+	color: #666666;
+	font-family: "Trebuchet MS", Verdana, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: 600;
+	}
+p.copyright {
+	color: #666666;
+	font-family: "Trebuchet MS", Verdana, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 12px;
+	text-align: center;
+	margin: 5px;
+	}
+hr {
+	height: 1px;
+	margin: 0;
+	padding: 0;
+	}
+*.content {
+	width: 468px; margin-left: auto; margin-right: auto;
+	}
+/* Stylesheet for sliders (only properties that differ from default) */
+#horizontal_slider_1 {
+	background-color: #7F7F7F;
+	border-color: #7F7F7F #363 #363 #7F7F7F;
+	}
+#horizontal_track_1 {
+	background-color: #CDCDCD;
+	border-color: #ded #9a9 #9a9 #ded;
+	}
+#display_holder_1 {
+	background-color: #FFFFFF;
+	border-color: #FFFFFF;
+	}
+#horizontal_slit_1 {
+	background-color: #232;
+	border-color: #9a9 #ded #ded #9a9;
+	}
+#value_display_1 {
+	background-color: #FFFFFF;
+	color: #FFFFFF;
+	}
+#horizontal_slider_2 {
+	background-color: #369;
+	border-color: #69c #036 #036 #69c;
+	}
+#horizontal_track_2 {
+	background-color: #bcd;
+	border-color: #def #9ab #9ab #def;
+	}
+#display_holder_2 {
+	background-color: #FFFFFF;
+	border-color: #FFFFFF;
+	}
+#horizontal_slit_2 {
+	background-color: #036;
+	border-color: #9ab #def #def #9ab;
+	}
+#value_display_2 {
+	background-color: #FFFFFF;
+	color: #FFFFFF;
+	}
+#horizontal_slider_3 {
+	background-color: #c33;
+	border-color: #f66 #933 #933 #f66;
+	}
+#horizontal_track_3 {
+	background-color: #dbb;
+	border-color: #fdd #b99 #b99 #fdd;
+	}
+#display_holder_3 {
+	background-color: #FFFFFF;
+	border-color: #FFFFFF;
+}
+#horizontal_slit_3 {
+	background-color: #300;
+	border-color: #b99 #fdd #fdd #b99;
+	}
+#value_display_3 {
+	background-color: #FFFFFF;
+	color: #000000;
+	}
+#horizontal_track_5, #display_holder_5 {
+	background-color: #fff;
+	border: #fff;
+	}
+#horizontal_slit_5 {
+	background-color: #000;
+	border-color: #999 #fff #fff #999;
+	}
+#value_display_5 {
+	background-color: #fff;
+	color: #666;
+	}
+</style></p>
+<!-- Button styling from http://www.oscaralexander.com/tutorials/how-to-make-sexy-buttons-with-css.html -->
+<p><style type="text/css">
+.clear { /* generic container (i.e. div) for floating buttons */
+    overflow: hidden;
+    width: 100%;
+}
+
+a.button {
+    background: transparent url('http://www.oscaralexander.com/tutorials/img/bg_button_a.gif') no-repeat scroll top right;
+    color: #444;
+    display: block;
+    float: left;
+    font: normal 12px arial, sans-serif;
+    height: 24px;
+    margin-right: 6px;
+    padding-right: 18px; /* sliding doors padding */
+    text-decoration: none;
+}
+
+a.button span {
+    background: transparent url('http://www.oscaralexander.com/tutorials/img/bg_button_span.gif') no-repeat;
+    display: block;
+    line-height: 14px;
+    padding: 5px 0 5px 18px;
+}
+
+a.button:active {
+    background-position: bottom right;
+    color: #000;
+    outline: none; /* hide dotted outline in Firefox */
+}
+
+a.button:active span {
+    background-position: bottom left;
+    padding: 6px 0 4px 18px; /* push text down 1px */
+}
+
+</style></p>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>       
+<script type="text/javascript" src="http://www.eecs.berkeley.edu/~kcurtis/jquery.cookie.js.txt"></script>        
+<script type="text/javascript">
+  $(document).ready(function(){   
+  var url= "${group_url}";
+  $.getJSON(url, function (data) {
+    try {
+      var groupNum = data.group;
+      $("#groupFromUrl").val(groupNum);
+    } catch (err) {
+      $("#groupFromUrlError").val(err.description);
+    }
+
+    try {
+      var cookieVal = $.cookie("kristalHitGroup");
+      $("#cookie").val(cookieVal);
+    } catch (err) {
+      $("#cookieError").val(err.description);
+    }
+
+    try {
+      if (cookieVal != null) {
+        groupNum = cookieVal;
+      }
+    } catch (err) {
+      $("#resetGroupFromCookieError").val(err.description);
+    }
+
+    try {
+      $("#finalGroup").val(groupNum);
+      $("#group").val(groupNum);
+    } catch (err) {
+      $("#setGroupError").val(err.description);
+    }
+
+    try {
+      $.cookie("kristalHitGroup", groupNum, { expires: 7, path: '/', domain: 'mturk.com' });
+    } catch (err) {
+      $("#setCookieError").val(err.description);
+    }
+
+    $("#hostname").val(document.location.hostname);
+  });
+
+    $("#pic").hide();   
+    $("#guess").hide();
+    $("#end").hide();   
+    $("#controlSliders").hide();
+    $("#treatmentSlider").hide();
+    $("#demographics").hide();
+    $("#start").click(function(){     
+      $("#pic").show();     
+      $("#start").hide();
+      $("#guess").show();      
+      $("#end").show();      
+      var now = new Date();     
+      $("#startTimeInput").val(now.getTime());   
+    });   
+    $("#end").click(function(){     
+      $("#intro").hide();
+      $("#pic").hide();
+      $("#guess").hide();
+      $("#end").hide();     
+      var now = new Date();     
+      $("#endTimeInput").val(now.getTime());   
+
+      var groupNum = $("#group").val();
+      if (groupNum == 0)
+        $("#controlSliders").show();
+      else
+        $("#treatmentSlider").show();
+
+      $("#demographics").show();
+    });  
+  });
+</script>
+<div id="intro">
+<h3>Guess how many dots are in an image</h3>
+<ul>
+    <li>
+    <p>In this HIT, you will be shown an image which will consist of many dots.  Your task is to accurately and quickly guess the number of dots in the image.</p>
+    </li>
+    <li>
+    <p>We will record your guess and the time you spend on the task (between starting and ending the guess).</p>
+    </li>
+    <li>
+    <p>After you provide your guess, we will ask you to rate your performance on the task with respect to both speed and accuracy.  We will also ask you to provide your demographic information.</p>
+    </li>
+    <li>
+    <p>The timer will begin, and the image will be shown, once you press the button labeled &quot;Start guessing.&quot;</p>
+    </li>
+    <li>
+    <p>Please complete the entire HIT to receive payment.</p>
+    </li>
+</ul>
+</div>
+<p id="start"><a class="button" href="#"><span>Start guessing</span></a></p>
+<p><input id="startTimeInput" type="hidden" name="startTime" /></p>
+<p id="pic"><img height="400" width="400" style="margin-right: 10px;" alt="" src="${image_url}" /></p>
+<div id="guess">
+<p>Please enter your guess:</p>
+<p><input type="text" name="guessValue" /></p>
+</div>
+<div id="end"><a class="button" href="#"><span>Done guessing</span></a>  <br />
+<br />
+<p>Don't submit yet!  Press &quot;Done guessing&quot; when you're happy with your guess so you can proceed to rating your performance and supplying demographic information.</p>
+</div>
+<p><input id="endTimeInput" type="hidden" name="endTime" /></p>
+<p><input id="group" type="hidden" name="group" /></p>
+<p>&nbsp;</p>
+<div><input type="hidden" id="groupFromUrl" name="groupFromUrl" /></div>
+<div><input type="hidden" id="cookie" name="cookie" /></div>
+<div><input type="hidden" id="finalGroup" name="finalGroup" /></div>
+<div><input type="hidden" id="groupFromUrlError" name="error1" /></div>
+<div><input type="hidden" id="cookieError" name="error2" /></div>
+<div><input type="hidden" id="resetGroupFromCookieError" name="error3" /></div>
+<div><input type="hidden" id="setGroupError" name="error4" /></div>
+<div><input type="hidden" id="setCookieError" name="error5" /></div>
+<div><input type="hidden" id="hostname" name="hostname" /></div>
+<div id="controlSliders">
+<h3>Self-assessment</h3>
+<ul>
+    <li>
+    <p>Now that you have entered your guess, please assess your performance by moving the sliders.</p>
+    </li>
+    <li>
+    <p>You will separately rate your speed and accuracy.</p>
+    </li>
+    <li>
+    <p>Moving the slider to the <b>right</b> means you think you performed well.</p>
+    </li>
+    <li>
+    <p>Moving the slider to the <b>left</b> means you think you did not perform well.</p>
+    </li>
+</ul>
+<p>Please rate your speed:</p>
+<table>
+    <tbody>
+        <tr>
+            <td>Slow</td>
+            <td><!-- Horizontal slider 1 (green) -->
+            <div class="horizontal_track" id="horizontal_track_1">
+            <div class="horizontal_slit" id="horizontal_slit_1">&nbsp;</div>
+            <!-- total movement: 100 pixels, scale: 1 [value/pixel],
+			default position: 50 pixels, connected to value_display_1 -->
+            <div class="horizontal_slider" id="horizontal_slider_1" style="left: 50px;" onmousedown="slide(event, 'horizontal', 100, 0, 100, 101, 0, 'value_display_1');">&nbsp;</div>
+            </div>
+            </td>
+            <td>Fast</td>
+            <td><!-- Value display 1 (green) -->
+            <div class="display_holder" id="display_holder_1"><!-- Default value: 50 -->  		<input type="hidden" class="value_display" id="value_display_1" name="slider" value="50" onfocus="blur(this);" /></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>Please rate your accuracy:</p>
+<table>
+    <tbody>
+        <tr>
+            <td>Poor accuracy</td>
+            <td><!-- Horizontal slider 1 (green) -->
+            <div class="horizontal_track" id="horizontal_track_2">
+            <div class="horizontal_slit" id="horizontal_slit_2">&nbsp;</div>
+            <!-- total movement: 100 pixels, scale: 1 [value/pixel],
+			default position: 50 pixels, connected to value_display_2 -->
+            <div class="horizontal_slider" id="horizontal_slider_2" style="left: 50px;" onmousedown="slide(event, 'horizontal', 100, 0, 100, 101, 0, 'value_display_2');">&nbsp;</div>
+            </div>
+            </td>
+            <td>Good accuracy</td>
+            <td><!-- Value display 1 (green) -->
+            <div class="display_holder" id="display_holder_2"><!-- Default value: 50 -->  		<input type="hidden" class="value_display" id="value_display_2" name="slider" value="50" onfocus="blur(this);" /></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>Are you sure you're happy with your answers?</p>
+<p><select name="sure">
+<option>--</option>
+<option>Yes</option>
+<option>No</option>
+</select></p>
+</div>
+<div id="treatmentSlider">
+<h3>Self-assessment</h3>
+<ul>
+    <li>
+    <p>Now that you have entered your guess, please assess your performance by moving the slider.</p>
+    </li>
+    <li>
+    <p>You will provide a joint rating of your speed and accuracy.</p>
+    </li>
+    <li>
+    <p>Moving the slider to the <b>right</b> means you think you performed accurately, but not quickly.</p>
+    </li>
+    <li>
+    <p>Moving the slider to the <b>left</b> means you think you performed quickly, but not accurately.</p>
+    </li>
+    <li>
+    <p>Leaving the slider near the <b>middle</b> means you think you performed equally quickly and accurately.</p>
+    </li>
+</ul>
+<table>
+    <tbody>
+        <tr>
+            <td>Speed</td>
+            <td>
+            <div class="horizontal_track" id="horizontal_track_3">
+            <div class="horizontal_slit" id="horizontal_slit_3">&nbsp;</div>
+            <div class="horizontal_slider" id="horizontal_slider_3" style="left: 50px;" onmousedown="slide(event, 'horizontal', 100, 0, 100, 101, 0, 'value_display_3');">&nbsp;</div>
+            </div>
+            </td>
+            <td>Accuracy</td>
+            <td>
+            <div class="display_holder" id="display_holder_3"><input type="hidden" class="value_display" id="value_display_3" name="slider" value="50" onfocus="blur(this);" /></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>Are you sure you're happy with your answer?</p>
+<p><select name="sure">
+<option>--</option>
+<option>Yes</option>
+<option>No</option>
+</select></p>
+</div>
+<p>&nbsp;</p>
+<div id="demographics">
+<p><b>Demographic Information</b></p>
+<p>&nbsp;What is your age?</p>
+<p><input type="text" name="age" size="10" id="age" /></p>
+<p>&nbsp;What is your gender?</p>
+<p><select name="gender">
+<option>--</option>
+<option>Male</option>
+<option>Female</option>
+</select></p>
+<p>&nbsp;Which of the following best describes your highest achieved education level?</p>
+<p><select name="education">
+<option>--</option>
+<option>Some High School</option>
+<option>High School Graduate</option>
+<option>Some college, no degree</option>
+<option>Associates degree</option>
+<option>Bachelors degree</option>
+<option>Graduate degree (Masters, Doctorate, etc.)</option>
+</select></p>
+<p>&nbsp;What is the total income of your household?</p>
+<p><select name="income">
+<option>--</option>
+<option>Less than $12,500</option>
+<option>$12,500 - $24,999</option>
+<option>$25,000 - $37,499</option>
+<option>$37,500 - $49,999</option>
+<option>$50,000 - $62,499</option>
+<option>$62,500 - $74,999</option>
+<option>$75,000 - $87,499</option>
+<option>$87,500 - $99,999</option>
+<option>$100,000 - $112,499</option>
+<option>$112,500 - $124,999</option>
+<option>$125,000 - $137,499</option>
+<option>$137,500 - $149,999</option>
+<option>$150,000 or more</option>
+</select></p>
+<p>What country do you live in?</p>
+<p><select name="country">
+<option>--</option>
+<option value="AF">Afghanistan</option>
+<option value="AX">&Atilde;&hellip;Land Islands</option>
+<option value="AL">Albania</option>
+<option value="DZ">Algeria</option>
+<option value="AS">American Samoa</option>
+<option value="AD">Andorra</option>
+<option value="AO">Angola</option>
+<option value="AI">Anguilla</option>
+<option value="AQ">Antarctica</option>
+<option value="AG">Antigua And Barbuda</option>
+<option value="AR">Argentina</option>
+<option value="AM">Armenia</option>
+<option value="AW">Aruba</option>
+<option value="AU">Australia</option>
+<option value="AT">Austria</option>
+<option value="AZ">Azerbaijan</option>
+<option value="BS">Bahamas</option>
+<option value="BH">Bahrain</option>
+<option value="BD">Bangladesh</option>
+<option value="BB">Barbados</option>
+<option value="BY">Belarus</option>
+<option value="BE">Belgium</option>
+<option value="BZ">Belize</option>
+<option value="BJ">Benin</option>
+<option value="BM">Bermuda</option>
+<option value="BT">Bhutan</option>
+<option value="BO">Bolivia</option>
+<option value="BA">Bosnia And Herzegovina</option>
+<option value="BW">Botswana</option>
+<option value="BV">Bouvet Island</option>
+<option value="BR">Brazil</option>
+<option value="IO">British Indian Ocean Territory</option>
+<option value="BN">Brunei Darussalam</option>
+<option value="BG">Bulgaria</option>
+<option value="BF">Burkina Faso</option>
+<option value="BI">Burundi</option>
+<option value="KH">Cambodia</option>
+<option value="CM">Cameroon</option>
+<option value="CA">Canada</option>
+<option value="CV">Cape Verde</option>
+<option value="KY">Cayman Islands</option>
+<option value="CF">Central African Republic</option>
+<option value="TD">Chad</option>
+<option value="CL">Chile</option>
+<option value="CN">China</option>
+<option value="CX">Christmas Island</option>
+<option value="CC">Cocos (Keeling) Islands</option>
+<option value="CO">Colombia</option>
+<option value="KM">Comoros</option>
+<option value="CG">Congo</option>
+<option value="CD">Congo, The Democratic Republic Of The</option>
+<option value="CK">Cook Islands</option>
+<option value="CR">Costa Rica</option>
+<option value="CI">Cote D'Ivoire</option>
+<option value="HR">Croatia</option>
+<option value="CU">Cuba</option>
+<option value="CY">Cyprus</option>
+<option value="CZ">Czech Republic</option>
+<option value="DK">Denmark</option>
+<option value="DJ">Djibouti</option>
+<option value="DM">Dominica</option>
+<option value="DO">Dominican Republic</option>
+<option value="EC">Ecuador</option>
+<option value="EG">Egypt</option>
+<option value="SV">El Salvador</option>
+<option value="GQ">Equatorial Guinea</option>
+<option value="ER">Eritrea</option>
+<option value="EE">Estonia</option>
+<option value="ET">Ethiopia</option>
+<option value="FK">Falkland Islands (Malvinas)</option>
+<option value="FO">Faroe Islands</option>
+<option value="FJ">Fiji</option>
+<option value="FI">Finland</option>
+<option value="FR">France</option>
+<option value="GF">French Guiana</option>
+<option value="PF">French Polynesia</option>
+<option value="TF">French Southern Territories</option>
+<option value="GA">Gabon</option>
+<option value="GM">Gambia</option>
+<option value="GE">Georgia</option>
+<option value="DE">Germany</option>
+<option value="GH">Ghana</option>
+<option value="GI">Gibraltar</option>
+<option value="GR">Greece</option>
+<option value="GL">Greenland</option>
+<option value="GD">Grenada</option>
+<option value="GP">Guadeloupe</option>
+<option value="GU">Guam</option>
+<option value="GT">Guatemala</option>
+<option value=" Gg">Guernsey</option>
+<option value="GN">Guinea</option>
+<option value="GW">Guinea-Bissau</option>
+<option value="GY">Guyana</option>
+<option value="HT">Haiti</option>
+<option value="HM">Heard Island And Mcdonald Islands</option>
+<option value="VA">Holy See (Vatican City State)</option>
+<option value="HN">Honduras</option>
+<option value="HK">Hong Kong</option>
+<option value="HU">Hungary</option>
+<option value="IS">Iceland</option>
+<option value="IN">India</option>
+<option value="ID">Indonesia</option>
+<option value="IR">Iran, Islamic Republic Of</option>
+<option value="IQ">Iraq</option>
+<option value="IE">Ireland</option>
+<option value="IM">Isle Of Man</option>
+<option value="IL">Israel</option>
+<option value="IT">Italy</option>
+<option value="JM">Jamaica</option>
+<option value="JP">Japan</option>
+<option value="JE">Jersey</option>
+<option value="JO">Jordan</option>
+<option value="KZ">Kazakhstan</option>
+<option value="KE">Kenya</option>
+<option value="KI">Kiribati</option>
+<option value="KP">Korea, Democratic People'S Republic Of</option>
+<option value="KR">Korea, Republic Of</option>
+<option value="KW">Kuwait</option>
+<option value="KG">Kyrgyzstan</option>
+<option value="LA">Lao People'S Democratic Republic</option>
+<option value="LV">Latvia</option>
+<option value="LB">Lebanon</option>
+<option value="LS">Lesotho</option>
+<option value="LR">Liberia</option>
+<option value="LY">Libyan Arab Jamahiriya</option>
+<option value="LI">Liechtenstein</option>
+<option value="LT">Lithuania</option>
+<option value="LU">Luxembourg</option>
+<option value="MO">Macao</option>
+<option value="MK">Macedonia, The Former Yugoslav Republic Of</option>
+<option value="MG">Madagascar</option>
+<option value="MW">Malawi</option>
+<option value="MY">Malaysia</option>
+<option value="MV">Maldives</option>
+<option value="ML">Mali</option>
+<option value="MT">Malta</option>
+<option value="MH">Marshall Islands</option>
+<option value="MQ">Martinique</option>
+<option value="MR">Mauritania</option>
+<option value="MU">Mauritius</option>
+<option value="YT">Mayotte</option>
+<option value="MX">Mexico</option>
+<option value="FM">Micronesia, Federated States Of</option>
+<option value="MD">Moldova, Republic Of</option>
+<option value="MC">Monaco</option>
+<option value="MN">Mongolia</option>
+<option value="MS">Montserrat</option>
+<option value="MA">Morocco</option>
+<option value="MZ">Mozambique</option>
+<option value="MM">Myanmar</option>
+<option value="NA">Namibia</option>
+<option value="NR">Nauru</option>
+<option value="NP">Nepal</option>
+<option value="NL">Netherlands</option>
+<option value="AN">Netherlands Antilles</option>
+<option value="NC">New Caledonia</option>
+<option value="NZ">New Zealand</option>
+<option value="NI">Nicaragua</option>
+<option value="NE">Niger</option>
+<option value="NG">Nigeria</option>
+<option value="NU">Niue</option>
+<option value="NF">Norfolk Island</option>
+<option value="MP">Northern Mariana Islands</option>
+<option value="NO">Norway</option>
+<option value="OM">Oman</option>
+<option value="PK">Pakistan</option>
+<option value="PW">Palau</option>
+<option value="PS">Palestinian Territory, Occupied</option>
+<option value="PA">Panama</option>
+<option value="PG">Papua New Guinea</option>
+<option value="PY">Paraguay</option>
+<option value="PE">Peru</option>
+<option value="PH">Philippines</option>
+<option value="PN">Pitcairn</option>
+<option value="PL">Poland</option>
+<option value="PT">Portugal</option>
+<option value="PR">Puerto Rico</option>
+<option value="QA">Qatar</option>
+<option value="RE">Reunion</option>
+<option value="RO">Romania</option>
+<option value="RU">Russian Federation</option>
+<option value="RW">Rwanda</option>
+<option value="SH">Saint Helena</option>
+<option value="KN">Saint Kitts And Nevis</option>
+<option value="LC">Saint Lucia</option>
+<option value="PM">Saint Pierre And Miquelon</option>
+<option value="VC">Saint Vincent And The Grenadines</option>
+<option value="WS">Samoa</option>
+<option value="SM">San Marino</option>
+<option value="ST">Sao Tome And Principe</option>
+<option value="SA">Saudi Arabia</option>
+<option value="SN">Senegal</option>
+<option value="CS">Serbia And Montenegro</option>
+<option value="SC">Seychelles</option>
+<option value="SL">Sierra Leone</option>
+<option value="SG">Singapore</option>
+<option value="SK">Slovakia</option>
+<option value="SI">Slovenia</option>
+<option value="SB">Solomon Islands</option>
+<option value="SO">Somalia</option>
+<option value="ZA">South Africa</option>
+<option value="GS">South Georgia And The South Sandwich Islands</option>
+<option value="ES">Spain</option>
+<option value="LK">Sri Lanka</option>
+<option value="SD">Sudan</option>
+<option value="SR">Suriname</option>
+<option value="SJ">Svalbard And Jan Mayen</option>
+<option value="SZ">Swaziland</option>
+<option value="SE">Sweden</option>
+<option value="CH">Switzerland</option>
+<option value="SY">Syrian Arab Republic</option>
+<option value="TW">Taiwan, Province Of China</option>
+<option value="TJ">Tajikistan</option>
+<option value="TZ">Tanzania, United Republic Of</option>
+<option value="TH">Thailand</option>
+<option value="TL">Timor-Leste</option>
+<option value="TG">Togo</option>
+<option value="TK">Tokelau</option>
+<option value="TO">Tonga</option>
+<option value="TT">Trinidad And Tobago</option>
+<option value="TN">Tunisia</option>
+<option value="TR">Turkey</option>
+<option value="TM">Turkmenistan</option>
+<option value="TC">Turks And Caicos Islands</option>
+<option value="TV">Tuvalu</option>
+<option value="UG">Uganda</option>
+<option value="UA">Ukraine</option>
+<option value="AE">United Arab Emirates</option>
+<option value="GB">United Kingdom</option>
+<option value="US">United States</option>
+<option value="UM">United States Minor Outlying Islands</option>
+<option value="UY">Uruguay</option>
+<option value="UZ">Uzbekistan</option>
+<option value="VU">Vanuatu</option>
+<option value="VE">Venezuela</option>
+<option value="VN">Viet Nam</option>
+<option value="VG">Virgin Islands, British</option>
+<option value="VI">Virgin Islands, U.S.</option>
+<option value="WF">Wallis And Futuna</option>
+<option value="EH">Western Sahara</option>
+<option value="YE">Yemen</option>
+<option value="ZM">Zambia</option>
+<option value="ZW">Zimbabwe</option>
+</select></p>
+<p>&nbsp;If you're in the USA, what state do you live in?</p>
+<p><select name="usa-state">
+<option>--</option>
+<option value="AL">Alabama</option>
+<option value="AK">Alaska</option>
+<option value="AZ">Arizona</option>
+<option value="AR">Arkansas</option>
+<option value="CA">California</option>
+<option value="CO">Colorado</option>
+<option value="CT">Connecticut</option>
+<option value="DE">Delaware</option>
+<option value="DC">District of Columbia</option>
+<option value="FL">Florida</option>
+<option value="GA">Georgia</option>
+<option value="HI">Hawaii</option>
+<option value="ID">Idaho</option>
+<option value="IL">Illinois</option>
+<option value="IN">Indiana</option>
+<option value="IA">Iowa</option>
+<option value="KS">Kansas</option>
+<option value="KY">Kentucky</option>
+<option value="LA">Louisiana</option>
+<option value="ME">Maine</option>
+<option value="MD">Maryland</option>
+<option value="MA">Massachusetts</option>
+<option value="MI">Michigan</option>
+<option value="MN">Minnesota</option>
+<option value="MS">Mississippi</option>
+<option value="MO">Missouri</option>
+<option value="MT">Montana</option>
+<option value="NE">Nebraska</option>
+<option value="NV">Nevada</option>
+<option value="NH">New Hampshire</option>
+<option value="NJ">New Jersey</option>
+<option value="NM">New Mexico</option>
+<option value="NY">New York</option>
+<option value="NC">North Carolina</option>
+<option value="ND">North Dakota</option>
+<option value="OH">Ohio</option>
+<option value="OK">Oklahoma</option>
+<option value="OR">Oregon</option>
+<option value="PA">Pennsylvania</option>
+<option value="RI">Rhode Island</option>
+<option value="SC">South Carolina</option>
+<option value="SD">South Dakota</option>
+<option value="TN">Tennessee</option>
+<option value="TX">Texas</option>
+<option value="UT">Utah</option>
+<option value="VT">Vermont</option>
+<option value="VA">Virginia</option>
+<option value="WA">Washington</option>
+<option value="WV">West Virginia</option>
+<option value="WI">Wisconsin</option>
+<option value="WY">Wyoming</option>
+</select></p>
+<p>We value your feedback.  How did you like our HIT?</p>
+<p><input type="text" name="feedback" size="100" id="feedback" /></p>
+<script language="JavaScript">
+VIH_DisplayFormat = "You are visiting from:<br>IP Address: %%IP%%<br>Host: %%HOST%%";
+VIH_DisplayOnPage = "no";
+</script>  <script language="JavaScript" src="http://scripts.hashemian.com/js/visitorIPHOST.js.php"></script>  <script type="text/javascript">
+document.write("<p><input type=\"hidden\" name=\"IP address\" value=" + VIH_HostIP + " /></p>");
+</script></div>
