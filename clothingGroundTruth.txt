@@ -1,0 +1,41 @@
+Note:  I'm not going to count accessories, shoes, etc.
+
+Image 1:
+#:  2
+ivory blouse, beige skirt
+
+Image 2:
+#:  3
+ivory cardigan, yellow blouse, black skirt
+
+Image 3:
+#:  2
+green lace blouse, orange shorts
+
+Image 4:
+#:  3
+navy shell, navy sweater, light blue skirt
+
+Image 5:
+#:  1
+gold dress
+
+Image 6:
+#:  1
+turquoise dress
+
+Image 7:
+#:  1
+lavender dress
+
+Image 8:
+#:  1
+yellow dress
+
+Image 9:
+#:  1
+green dress
+
+Image 10:
+#:  3
+gray blazer, gray skirt, black underpinning

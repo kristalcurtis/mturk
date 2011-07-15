@@ -1,0 +1,39 @@
+Image 1:
+#:  2
+red blouse, khaki shorts
+
+Image 2:
+#:  2
+white blouse, gray slacks
+
+Image 3:
+#:  2
+plaid blouse, khaki shorts
+
+Image 4:
+#:  2
+blue blouse, white slacks
+
+Image 5:
+#:  3
+denim blouse, striped shirt, ivory ruffled skirt
+
+Image 6:
+#:  3
+navy coat, striped tee, khaki pants
+
+Image 7:
+#:  3
+white jacket, gray shirt, khaki pants
+
+Image 8:
+#:  1
+coral print dress
+
+Image 9:
+#:  1
+blue dress
+
+Image 10:
+#:  1
+gray evening dress
