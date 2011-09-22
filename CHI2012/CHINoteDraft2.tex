@@ -112,6 +112,17 @@ According to the MTurk blog, workers who have been recognized as Photo Moderatio
 
 \tab To test their correctness in labeling the items of clothing, workers were asked to be as descriptive as possible. Each experiment run had 10 unique images, allowing a minimum of 10 unique workers to complete the tasks in each run. In order to observe the effect of using an expert group versus a diverse group, the experiment was carried out over the course of three runs. For each HIT over all three runs, Workers could earn \$0.10. However due to the fact that Mechanical Turk collects a fee of 20\% of the assignment reward for the Masters distinction, the total cost for the Photo Moderation and Categorization runs were greater than that of the General run. In the first run, only Photo Moderation Masters qualified workers could work on the posted HITs. In the next run, all workers, regardless of whether they had a Masters distinction were allowed to work on the HITs. In the final run, workers were restricted such that only those with the Categorization Masters distinction could work on the posted tasks. 
 
+We established the ground truth by first individually reviewing and labeling the images we were also asking the Mechanical Turk workers to consider, then taking the union of our responses. Accuracy was measured by comparing how many of the top tokens within a set also appeared in the established ground truth. Our ground truth was limited in that synonyms of ground truth words were excluded from qualifying as a correct response. Using the number of tokens that matched and the total number of tokens in the ground truth, a score was calculated for each image as follows:
+\\
+\\
+\begin{math}
+Image \ Score=\frac{|Matching \ top \ tokens|}{|Ground \ truth \ tokens|}
+\end{math}
+\\
+\\
+
+% add examples of ground truth labels & image here
+
 \section{Results}
 \tab In both the Photo Moderation and Categorization runs, workers were required to have an expert distinction, while in the General run all Mechanical Turk Workers were allowed to complete the HITs. When checking for worker overlap among the three experiment runs, we noticed only one worker had submitted to both the Photo Moderation and the General run. While conducting the experiments, a distinct difference in throughput was also noticed. Understandably, the General run took the least amount of time to reach completion- around two hours. Since all Mechanical Turk workers qualified for this run, these HITs were rapidly completed. While the Photo Moderation run took around 18 hours to be completed, the Categorization run took 9 days to successfully run to completion. Once all the responses were received, they were reviewed manually to correct spelling differences (''color'' versus ''colour'') as well as to make similar labels (''pant'' versus ''pants'') consistent. This allowed us to begin analyzing the data.
 
@@ -124,14 +135,7 @@ According to the MTurk blog, workers who have been recognized as Photo Moderatio
 \label{fig:figure1}
 \end{figure}
  
-\tab Using these three experiment runs, a more diverse group of worker responses was created. Using a randomly generated set of indices, we selected worker responses among the three groups. These responses were grouped together to create the mix group of responses. Similar to the original sets of responses, this new set  was parsed into single word tokens used to describe each image. From these tokens, the top tokens, tokens which were used in at least five of the 10 responses for each image, were extracted. We established the ground truth by first individually reviewing and labeling the images we were also asking the Mechanical Turk workers to consider, then taking the union of our responses. Accuracy was measured by comparing how many of the top tokens within a set also appeared in the established ground truth. Our ground truth was limited in that synonyms of ground truth words were excluded from qualifying as a correct response. Using the number of tokens that matched and the total number of tokens in the ground truth, a score was calculated for each image as follows:
-\\
-\\
-\begin{math}
-Image \ Score=\frac{|Matching \ top \ tokens|}{|Ground \ truth \ tokens|}
-\end{math}
-\\
-\\
+\tab Using these three experiment runs, a more diverse group of worker responses was created. Using a randomly generated set of indices, we selected worker responses among the three groups. These responses were grouped together to create the mix group of responses. Similar to the original sets of responses, this new set  was parsed into single word tokens used to describe each image. From these tokens, the top tokens, tokens which were used in at least five of the 10 responses for each image, were extracted. 
 \tab After creating a simple diverse group with a ratio of 50-50 from Photo Moderation-Categorization, we were interested in seeing what effect altering the mix ratio would have on the calculated score. We decided to create a group with a ratio of 40-30-30 from Photo Moderation-Categorization-General.   
 
  \begin{figure}
